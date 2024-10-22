@@ -4,16 +4,18 @@ export const NameText = () => {
   return (
     <div>
       <svg
-        width="200.074"
-        height="93.6"
+        className="md:w-40 md:h-24 w-24 h-12"
+        // width="200.074"
+        // height="93.6"
         viewBox="0 0 261.074 93.6"
-        xmlns="http://www.w3.org/2000/svg"
+        // xmlns="http://www.w3.org/2000/svg"
       >
         <g
           id="svgGroup"
+          className="sm:text-sm"
           stroke-linecap="round"
           fill-rule="evenodd"
-          font-size="9pt"
+          font-size="7pt"
           stroke="#000"
           stroke-width="0.mm"
           fill="white"
