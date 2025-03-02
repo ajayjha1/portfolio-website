@@ -28,31 +28,31 @@ import Image from "next/image";
 
 export const TechStack = () => {
   return (
-    <Card className="bg-black text-white w-[800px]">
+    <Card className="bg-black text-white w-[550px] border-gray-800 max-w-screen">
       <CardHeader>
         <CardTitle>Tech Stack</CardTitle>
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
       <CardContent>
         <div className="flex space-x-1">
-          <Image src={HTMLSvg} alt="HTML" width={50} height={50} />
-          <Image src={CSSSvg} alt="CSS" width={50} height={50} />
-          <Image src={ExpressJsSvg} alt="ExpressJs" width={50} height={50} className="invert"/>
-          <Image src={JavascriptSvg} alt="Javascript" width={50} height={50} />
-          <Image src={NextJsSvg} alt="NextJs" width={50} height={50} />
-          <Image src={TypescriptSvg} alt="Typescript" width={50} height={50} />
-          <Image src={ReactSvg} alt="ReactJs" width={50} height={50} />
-          <Image src={TailwindSvg} alt="Tailwind" width={50} height={50} />
+          <Image src={HTMLSvg} alt="HTML" width={60} height={60} />
+          <Image src={CSSSvg} alt="CSS" width={60} height={60} />
+          <Image src={ExpressJsSvg} alt="ExpressJs" width={60} height={60} className="invert"/>
+          <Image src={JavascriptSvg} alt="Javascript" width={60} height={60} />
+          <Image src={NextJsSvg} alt="NextJs" width={60} height={60} />
+          <Image src={TypescriptSvg} alt="Typescript" width={60} height={60} />
+          <Image src={ReactSvg} alt="ReactJs" width={60} height={60} />
+          <Image src={TailwindSvg} alt="Tailwind" width={60} height={60} />
         </div>
-        <div className="flex space-x-1 pt-5" >
-          <Image src={PostgresSvg} alt="Postgres" width={50} height={50} />
-          <Image src={MongoDBSvg} alt="MongoDB" width={50} height={50} />
-          <Image src={VSCodeSvg} alt="VSCode" width={50} height={50} />
-          <Image src={GitSvg} alt="Git" width={50} height={50} />
-          <Image src={Tailwind2Svg} alt="Tailwind2" width={50} height={50} />
-          <Image src={GithubSvg} alt="Github" width={50} height={50} className="invert" />
-          <Image src={PostmanSvg} alt="Postman" width={50} height={50} className="invert"/>
-          <Image src={DockerSvg} alt="Docker" width={50} height={50} />
+        <div className="flex space-x-1 pt-5">
+          <Image src={PostgresSvg} alt="Postgres" width={60} height={60} />
+          <Image src={MongoDBSvg} alt="MongoDB" width={60} height={60} />
+          <Image src={VSCodeSvg} alt="VSCode" width={60} height={60} />
+          <Image src={GitSvg} alt="Git" width={60} height={60} />
+          <Image src={Tailwind2Svg} alt="Tailwind2" width={60} height={60} />
+          <Image src={GithubSvg} alt="Github" width={60} height={60} className="invert"/>
+          <Image src={PostmanSvg} alt="Postman" width={60} height={60} className="invert"/>
+          <Image src={DockerSvg} alt="Docker" width={60} height={60} />
         </div>
       </CardContent>
       {/* <CardFooter>
