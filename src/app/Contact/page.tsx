@@ -3,7 +3,13 @@ import React from 'react';
 import { Header } from '@/components/Header';
 import Link from 'next/link';
 
-const ContactLink = ({ href, icon, label }) => (
+interface ContactLinkProps {
+    href: string;
+    icon: React.ReactNode;
+    label: string;
+  }
+
+const ContactLink: React.FC<ContactLinkProps> = ({ href, icon, label }) => (
   <Link 
     href={href}
     target="_blank"

@@ -3,8 +3,15 @@ import React from 'react';
 import Link from 'next/link';
 import { Header } from '@/components/Header';
 
+// TypeScript interfaces for component props
+interface ProjectProps {
+  title: string;
+  url?: string;
+  description: string[];
+}
+
 // Project component for individual projects
-const Project = ({ title, url, description }) => (
+const Project: React.FC<ProjectProps> = ({ title, url, description }) => (
   <div className="bg-gray-900/50 rounded-lg p-6 hover:bg-gray-900/80 transition-all duration-300 border border-gray-800 hover:border-gray-700 shadow-md">
     <h3 className="text-xl font-semibold mb-3">
       {url ? (
@@ -29,8 +36,17 @@ const Project = ({ title, url, description }) => (
   </div>
 );
 
+// Interface for Role component props
+interface RoleProps {
+  company: string;
+  title: string;
+  period: string;
+  location: string;
+  projects: ProjectProps[];
+}
+
 // Role component for individual job experiences
-const Role = ({ company, title, period, location, projects }) => (
+const Role: React.FC<RoleProps> = ({ company, title, period, location, projects }) => (
   <div className="relative">
     <div className="flex items-center mb-4 justify-center text-center">
       <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-gray-300 text-transparent bg-clip-text">{company}</h2>
@@ -58,9 +74,18 @@ const Role = ({ company, title, period, location, projects }) => (
   </div>
 );
 
-const Experience = () => {
+// Interface for experience data
+interface ExperienceData {
+  company: string;
+  title: string;
+  period: string;
+  location: string;
+  projects: ProjectProps[];
+}
+
+const Experience: React.FC = () => {
   // Data for experience section
-  const experienceData = [
+  const experienceData: ExperienceData[] = [
     {
       company: "NATIONAL INSTITUTE OF ELECTRONICS & INFORMATION TECHNOLOGY (NIELIT)",
       title: "Junior Software Developer",

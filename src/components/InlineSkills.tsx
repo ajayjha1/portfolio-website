@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image, { StaticImageData } from "next/image";
 import HTMLSvg from "@/images/HTML.svg"
 import CSSSvg from "@/images/CSS.svg"
 import ExpressJsSvg from "@/images/Expressjs.svg"
@@ -16,11 +17,22 @@ import GitSvg from "@/images/Git.svg"
 import GithubSvg from "@/images/Github.svg"
 import PostmanSvg from "@/images/Postman.svg"
 import DockerSvg from "@/images/Docker.svg"
-import Image from "next/image";
 
-export const InlineSkills = () => {
+// Interface for tech item
+interface TechItem {
+  src: StaticImageData;
+  alt: string;
+  invert: boolean;
+}
+
+// Interface for TechIcon props
+interface TechIconProps {
+  tech: TechItem;
+}
+
+export const InlineSkills: React.FC = () => {
   // Define tech categories
-  const frontendTech = [
+  const frontendTech: TechItem[] = [
     { src: HTMLSvg, alt: "HTML", invert: false },
     { src: CSSSvg, alt: "CSS", invert: false },
     { src: JavascriptSvg, alt: "Javascript", invert: false },
@@ -31,13 +43,13 @@ export const InlineSkills = () => {
     { src: Tailwind2Svg, alt: "Tailwind", invert: false },
   ];
   
-  const backendTech = [
+  const backendTech: TechItem[] = [
     { src: ExpressJsSvg, alt: "ExpressJs", invert: true },
     { src: PostgresSvg, alt: "PostgreSQL", invert: false },
     { src: MongoDBSvg, alt: "MongoDB", invert: false },
   ];
   
-  const tools = [
+  const tools: TechItem[] = [
     { src: VSCodeSvg, alt: "VS Code", invert: false },
     { src: GitSvg, alt: "Git", invert: false },
     { src: GithubSvg, alt: "Github", invert: true },
@@ -45,7 +57,7 @@ export const InlineSkills = () => {
     { src: DockerSvg, alt: "Docker", invert: false },
   ];
 
-  const TechIcon = ({ tech }) => (
+  const TechIcon: React.FC<TechIconProps> = ({ tech }) => (
     <div className="group flex flex-col items-center">
       <div className="bg-gray-900 p-2 rounded-lg flex items-center justify-center h-14 w-14 border border-gray-800 hover:border-gray-700 transition-all">
         <Image 
@@ -100,3 +112,5 @@ export const InlineSkills = () => {
     </div>
   );
 };
+
+export default InlineSkills

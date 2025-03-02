@@ -3,18 +3,28 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import Link from 'next/link';
 import Image from 'next/image';
-// For local imports like this to work, you need to configure next.config.js
-// See comment below component
+
+// TypeScript interfaces for component props
+interface TechBadgeProps {
+  tech: string;
+}
 
 // Badge component for tech stacks
-const TechBadge = ({ tech }) => (
+const TechBadge: React.FC<TechBadgeProps> = ({ tech }) => (
   <span className="inline-block bg-gray-800 text-gray-300 rounded-full px-3 py-1 text-sm font-medium mr-2 mb-2">
     {tech}
   </span>
 );
 
+// Button component props
+interface ButtonProps {
+  children: React.ReactNode;
+  href: string;
+  icon?: boolean;
+}
+
 // Button component for links
-const Button = ({ children, href, icon = false }) => (
+const Button: React.FC<ButtonProps> = ({ children, href, icon = false }) => (
   <Link 
     href={href} 
     target="_blank" 
@@ -31,8 +41,13 @@ const Button = ({ children, href, icon = false }) => (
   </Link>
 );
 
+// Video button component props
+interface VideoButtonProps {
+  onClick: () => void;
+}
+
 // Video button component
-const VideoButton = ({ onClick }) => (
+const VideoButton: React.FC<VideoButtonProps> = ({ onClick }) => (
   <button 
     onClick={onClick}
     className="group inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-white border border-blue-700 transition-all duration-300"
@@ -44,8 +59,29 @@ const VideoButton = ({ onClick }) => (
   </button>
 );
 
+// Project card component props
+interface ProjectCardProps {
+  title: string;
+  period: string;
+  description: string;
+  techStack: string[];
+  imageUrl?: string | null;
+  videoUrl?: string | null;
+  sourceLink?: string;
+  demoLink?: string;
+}
+
 // Project card component
-const ProjectCard = ({ title, period, description, techStack, imageUrl, videoUrl, sourceLink, demoLink }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ 
+  title, 
+  period, 
+  description, 
+  techStack, 
+  imageUrl, 
+  videoUrl, 
+  sourceLink, 
+  demoLink 
+}) => {
   const [showVideo, setShowVideo] = useState(false);
   
   // Use placeholder for missing images
@@ -135,17 +171,27 @@ const ProjectCard = ({ title, period, description, techStack, imageUrl, videoUrl
   );
 };
 
-const Projects = () => {
+// Project data interface
+interface ProjectData {
+  title: string;
+  period: string;
+  description: string;
+  techStack: string[];
+  imageUrl?: string | null;
+  videoUrl?: string | null;
+  sourceLink?: string;
+  demoLink?: string;
+}
+
+const Projects: React.FC = () => {
   // Project data
-  const projects = [
+  const projects: ProjectData[] = [
     {
       title: "Central Repository",
       period: "Nov 2023 - Feb 2024",
       description: "A document management application for NIELIT enabling users to create folders, upload documents, and share them with specific permission levels within the organization.",
       techStack: ["MERN Stack", "JWT", "Multer", "Express", "MongoDB", "React"],
-      // Use placeholder images until you have real images
       imageUrl: null,
-      // Use an absolute path if video is in public folder
       videoUrl: "/videos/CRPDemo.mp4",
       sourceLink: "https://github.com/yourusername/central-repository",
       demoLink: "https://drive.nielit.in"
@@ -218,4 +264,3 @@ const Projects = () => {
 };
 
 export default Projects;
-
