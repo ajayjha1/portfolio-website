@@ -113,4 +113,4 @@ export const InlineSkills: React.FC = () => {
   );
 };
 
-export default InlineSkills
+export default InlineSkills;

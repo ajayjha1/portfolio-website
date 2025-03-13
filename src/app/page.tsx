@@ -26,7 +26,7 @@ export default function Home() {
         {/* Call to Action Section */}
         <div className="mt-20 flex flex-col sm:flex-row items-center justify-center gap-6">
           <Link 
-            href="/projects" 
+            href="/Projects" 
             className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-md text-white border border-blue-700 hover:border-blue-400 transition-all duration-300"
           >
             <span className="font-medium">View Projects</span>
@@ -34,7 +34,7 @@ export default function Home() {
           </Link>
           
           <Link 
-            href="/experience" 
+            href="/Experience" 
             className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 px-8 py-3 rounded-md text-white border border-gray-700 hover:border-gray-500 transition-all duration-300"
           >
             <span className="font-medium">Work Experience</span>

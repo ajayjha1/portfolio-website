@@ -249,7 +249,7 @@ const Projects: React.FC = () => {
         <div className="text-center mt-8 py-8">
           <p className="text-gray-400 mb-4">Interested in my work?</p>
           <Link 
-            href="/experience" 
+            href="/Experience" 
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800"
           >
             View Work Experience

@@ -52,7 +52,7 @@ const Contact = () => {
           />
           
           <ContactLink 
-            href="https://linkedin.com/in/yourusername" // Replace with your actual LinkedIn URL
+            href="https://www.linkedin.com/in/ajay-jha-1a5ab9173" // Replace with your actual LinkedIn URL
             label="LinkedIn"
             icon={
               <svg className="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@ const Contact = () => {
           />
           
           <ContactLink 
-            href="https://github.com/yourusername" // Replace with your actual GitHub URL
+            href="https://github.com/ajayjha1" // Replace with your actual GitHub URL
             label="GitHub"
             icon={
               <svg className="w-6 h-6 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
