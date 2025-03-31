@@ -131,7 +131,7 @@ const Experience: React.FC = () => {
             Work Experience
           </h1>
           <Link 
-            href="https://drive.google.com/file/d/1n2G4zhVXFE4INGvfr9M-2ZhyHbPzE0R2/view?usp=sharing" 
+            href="https://drive.google.com/file/d/10E6EY9r8CSr7s9iQnHIu9G0K0BCEBCqA/view?usp=sharing" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="group inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-3 rounded-md text-white border border-blue-700 hover:border-blue-400 transition-all duration-300 shadow-lg hover:shadow-blue-900/20"
