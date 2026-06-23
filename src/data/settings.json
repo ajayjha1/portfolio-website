@@ -1,0 +1,247 @@
+{
+  "resumeUrl": "https://drive.google.com/file/d/1F_KzKJhwWy0d8ExnlEw99wQeN1XausNv/view?usp=sharing",
+  "aboutText": "I design and ship full-stack web applications — from clean APIs to polished interfaces. I enjoy working across the stack, solving hard problems, and building tools that are fast, reliable, and actually useful.",
+  "roles": [
+    "Full Stack Developer",
+    "AI Systems Builder"
+  ],
+  "stats": [
+    {
+      "value": "90%",
+      "label": "page load time cut"
+    },
+    {
+      "value": "4×",
+      "label": "API throughput boosted"
+    },
+    {
+      "value": "6+",
+      "label": "production systems shipped"
+    },
+    {
+      "value": "2",
+      "label": "AI products in market"
+    }
+  ],
+  "focus": [
+    {
+      "icon": "◈",
+      "label": "AI Brand Intelligence",
+      "desc": "LLM-powered brand monitoring, narrative decoding, and multi-brand analytics for enterprise clients across SE Asia.",
+      "tag": "ebic.ai @ M37 Labs"
+    },
+    {
+      "icon": "◉",
+      "label": "ESG Compliance Systems",
+      "desc": "Real-time commitments registry, ESG pillar tracking (Environmental / Social / Governance), and AI-validated evidence modules.",
+      "tag": "ESG Dashboard @ M37 Labs"
+    },
+    {
+      "icon": "◎",
+      "label": "Scalable Web Architecture",
+      "desc": "End-to-end systems with React/Next.js, Node.js, and MongoDB — optimized for speed, security, and maintainability at scale.",
+      "tag": "@ M37Labs"
+    }
+  ],
+  "stack": [
+    {
+      "label": "Frontend",
+      "items": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Redux",
+        "ShadCN UI"
+      ]
+    },
+    {
+      "label": "Backend",
+      "items": [
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "JWT Auth",
+        "Multer",
+        "PM2"
+      ]
+    },
+    {
+      "label": "Data",
+      "items": [
+        "MongoDB",
+        "MySQL",
+        "Mongoose",
+        "Prisma",
+        "SharePoint"
+      ]
+    },
+    {
+      "label": "Tools & AI",
+      "items": [
+        "Docker",
+        "Git",
+        "Claude",
+        "Cursor",
+        "Postman",
+        "Vercel"
+      ]
+    }
+  ],
+  "openSource": {
+    "text": "Recently contributed to Cal.com — a production scheduling platform used by millions. Merged PR improving core scheduling flow.",
+    "githubUrl": "https://github.com/ajayjha1"
+  },
+  "footerTagline": "Let's build something that matters.",
+  "projects": [
+    {
+      "id": "1",
+      "title": "ebic.ai — AI Brand Intelligence Platform",
+      "period": "Feb 2026 – Present",
+      "category": "M37 Labs",
+      "description": "Built Analytics Dashboard with Core System Reports (Headcount, Active/Non-Active Users, Artifact & Usage Metrics). Developed Presentation Builder with PPTX generation, theme presets, pitch types, layout/tone controls, and brand context injection. Implemented multi-brand Brand Intelligence module with AI monitoring across Overview, Presentations, Narrative Decoding, Social Media & Research LLM tabs.",
+      "tech": [
+        "React",
+        "Node.js",
+        "Python"
+      ],
+      "liveUrl": "",
+      "githubUrl": "",
+      "videoUrl": ""
+    },
+    {
+      "id": "2",
+      "title": "ESG Monitoring Dashboard",
+      "period": "Feb 2026 – Present",
+      "category": "M37 Labs",
+      "description": "Built Commitments Registry with live 24h sync — tracking Drift Flags, Total Commitments, Fetched Articles, and Business Risk scores. Implemented ESG Pillar Distribution chart (Environmental 48%, Social 29%, Governance 24%) and Evidence Verification module showing 100% AI-validated compliance. Built Add Commitment flow, Filters, Export, AI chat, and dark/light theme toggle.",
+      "tech": [
+        "Next.js",
+        "TypeScript",
+        "Vercel"
+      ],
+      "liveUrl": "",
+      "githubUrl": "",
+      "videoUrl": ""
+    },
+    {
+      "id": "3",
+      "title": "Central Repository",
+      "period": "Nov 2023 – Feb 2026",
+      "category": "NIELIT",
+      "description": "Document Management application for NIELIT's internal team built end-to-end from scratch. Comprehensive authentication (login, password recovery, 2FA, JWT session management) with complete file handling including upload, edit, archive, and recovery. Permission levels: View Only, View & Edit, Open To All. Enforced 50MB per-file upload limit and 16GB max storage per user. Optimized page load time by 90% using data streaming.",
+      "tech": [
+        "React",
+        "Node.js",
+        "TypeScript",
+        "ShadCN UI",
+        "TailwindCSS",
+        "MongoDB"
+      ],
+      "liveUrl": "https://drive.nielit.in",
+      "githubUrl": "",
+      "videoUrl": "/videos/CRPDemo.mp4"
+    },
+    {
+      "id": "4",
+      "title": "Recruitment Portal",
+      "period": "Nov 2023 – Feb 2026",
+      "category": "NIELIT",
+      "description": "Revamped the recruitment portal with ReactJS and NodeJS, leveraging the existing MySQL database. Implemented dynamic form generation component based on fields and groups from the database. Integrated Redux for centralized data storage, cutting API calls by 30% and improving page rendering speed by 25%. Enabled customized validation for different group types including tables with add-row functionality.",
+      "tech": [
+        "ReactJS",
+        "NodeJS",
+        "MySQL",
+        "Redux",
+        "TailwindCSS"
+      ],
+      "liveUrl": "https://recruit.nielit.in",
+      "githubUrl": "",
+      "videoUrl": ""
+    },
+    {
+      "id": "5",
+      "title": "NIELIT Digital University",
+      "period": "Nov 2023 – Feb 2026",
+      "category": "NIELIT",
+      "description": "Enabled course admins to upload questions and built the frontend with ReactJs integrated with backend APIs. Implemented a third-party courses integration mechanism.",
+      "tech": [
+        "ReactJS",
+        "Node.js"
+      ],
+      "liveUrl": "https://ndu.digital",
+      "githubUrl": "",
+      "videoUrl": ""
+    },
+    {
+      "id": "6",
+      "title": "NIELIT Main Blog Website",
+      "period": "Nov 2023 – Feb 2026",
+      "category": "NIELIT",
+      "description": "Generated dynamic pages based on components retrieved from MySQL stored procedures. Enabled Superadmin to assign Content Approvers and Content Creators per subsite, manage all content and sub-admins. Built a rich Text Editor for writing blogs and crafting static pages with prebuilt custom UI components.",
+      "tech": [
+        "ReactJS",
+        "Node.js",
+        "MySQL"
+      ],
+      "liveUrl": "https://nielit.gov.in",
+      "githubUrl": "",
+      "videoUrl": ""
+    },
+    {
+      "id": "7",
+      "title": "Node API — Local Exam Server",
+      "period": "Nov 2023 – Feb 2026",
+      "category": "NIELIT",
+      "description": "Engineered Node.js APIs for a local exam server using Express and MySQL stored procedures. Used PM2 clustering to scale across CPU cores, boosting request capacity from 100–200 to 400–800 per minute. Integrated Winston with DailyRotateFile for logging, JWT authentication for security, and optimized image handling, bulk transactions, and API performance with comprehensive error handling.",
+      "tech": [
+        "Node.js",
+        "Express.js",
+        "MySQL",
+        "PM2",
+        "JWT",
+        "Winston"
+      ],
+      "liveUrl": "",
+      "githubUrl": "",
+      "videoUrl": ""
+    },
+    {
+      "id": "8",
+      "title": "Billing Portal — AARN Logistics",
+      "period": "Nov 2022 – Oct 2023",
+      "category": "AARN Logistics",
+      "description": "Architected a Billing Portal using ReactJS, TypeScript, and SharePoint SPFx, enabling employee management, role-based access control, document handling, and workflow automation.",
+      "tech": [
+        "ReactJS",
+        "TypeScript",
+        "SharePoint SPFx"
+      ],
+      "liveUrl": "",
+      "githubUrl": "",
+      "videoUrl": ""
+    },
+    {
+      "id": "9",
+      "title": "pickleslot.com",
+      "period": "2025",
+      "category": "Side Project",
+      "description": "A slot booking platform for pickleball and other court sports. Users can browse available courts, book time slots, and manage their reservations in real time.",
+      "tech": [
+        "Next.js",
+        "MongoDB"
+      ],
+      "liveUrl": "https://pickleslot.com",
+      "githubUrl": "",
+      "videoUrl": ""
+    }
+  ],
+  "sectionVisibility": {
+    "stats": true,
+    "focus": true,
+    "writing": true,
+    "stack": true,
+    "openSource": false,
+    "footer": true
+  }
+}

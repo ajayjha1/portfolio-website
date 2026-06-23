@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Header } from '@/components/Header';
 
@@ -39,35 +39,46 @@ const Project: React.FC<ProjectProps> = ({ title, url, description }) => (
 // Interface for Role component props
 interface RoleProps {
   company: string;
+  companyUrl?: string;
   title: string;
   period: string;
   location: string;
+  intro: string;
   projects: ProjectProps[];
 }
 
 // Role component for individual job experiences
-const Role: React.FC<RoleProps> = ({ company, title, period, location, projects }) => (
+const Role: React.FC<RoleProps> = ({ company, companyUrl, title, period, location, intro, projects }) => (
   <div className="relative">
     <div className="flex items-center mb-4 justify-center text-center">
-      <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-gray-300 text-transparent bg-clip-text">{company}</h2>
-      <span className="ml-2 text-xl text-blue-400">↗</span>
+      {companyUrl ? (
+        <a href={companyUrl} target="_blank" rel="noopener noreferrer" className="group flex items-center">
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-gray-300 text-transparent bg-clip-text group-hover:to-blue-300 transition-all">{company}</h2>
+          <span className="ml-2 text-xl text-blue-400 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+        </a>
+      ) : (
+        <>
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-gray-300 text-transparent bg-clip-text">{company}</h2>
+          <span className="ml-2 text-xl text-blue-400">↗</span>
+        </>
+      )}
     </div>
-    
+
     <div className="bg-blue-500/10 rounded-full px-4 py-1 mb-6 inline-block mx-auto flex items-center justify-center">
       <p className="text-blue-300 text-sm font-medium text-center">{title} | {period} | {location}</p>
     </div>
-    
+
     <p className="mb-8 text-center text-gray-300 max-w-2xl mx-auto">
-      Working as a full-time Junior Software Developer on critical organization applications:
+      {intro}
     </p>
-    
+
     <div className="grid md:grid-cols-1 gap-6">
       {projects.map((project, index) => (
-        <Project 
-          key={index} 
-          title={project.title} 
+        <Project
+          key={index}
+          title={project.title}
           url={project.url}
-          description={project.description} 
+          description={project.description}
         />
       ))}
     </div>
@@ -77,34 +88,69 @@ const Role: React.FC<RoleProps> = ({ company, title, period, location, projects 
 // Interface for experience data
 interface ExperienceData {
   company: string;
+  companyUrl?: string;
   title: string;
   period: string;
   location: string;
+  intro: string;
   projects: ProjectProps[];
 }
 
 const Experience: React.FC = () => {
-  // Data for experience section
+  const [resumeUrl, setResumeUrl] = useState("");
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((d) => setResumeUrl(d.resumeUrl || ""))
+      .catch(() => {});
+  }, []);
+
   const experienceData: ExperienceData[] = [
     {
+      company: "M37 LABS",
+      companyUrl: "https://m37labs.com",
+      title: "Full Stack Developer",
+      period: "Feb 2026 – Present",
+      location: "Remote",
+      intro: "Building AI-powered brand intelligence and ESG monitoring products for enterprise clients across SE Asia.",
+      projects: [
+        {
+          title: "ebic.ai — AI Brand Intelligence Platform",
+          description: [
+            "Built Analytics Dashboard with Core System Reports — Headcount, Active/Non-Active Users, Artifact & Usage Metrics, and Top Performing Users.",
+            "Developed Presentation Builder: PPTX generation with theme presets, pitch types, layout/tone controls, brand context injection & narrative enrichment.",
+            "Implemented multi-brand Brand Intelligence module with AI monitoring across Overview, Presentations, Narrative Decoding, Social Media & Research LLM tabs.",
+            "Stack: React, Node.js, Python."
+          ]
+        },
+        {
+          title: "ESG Monitoring Dashboard",
+          description: [
+            "Built Commitments Registry with live 24h sync — tracking Drift Flags, Total Commitments, Fetched Articles, and Business Risk scores.",
+            "Implemented ESG Pillar Distribution chart (Environmental 48%, Social 29%, Governance 24%) and Evidence Verification module showing 100% AI-validated compliance.",
+            "Built Add Commitment flow, Filters, Export, AI chat, and dark/light theme toggle.",
+            "Stack: Next.js — deployed on Vercel."
+          ]
+        }
+      ]
+    },
+    {
       company: "NATIONAL INSTITUTE OF ELECTRONICS & INFORMATION TECHNOLOGY (NIELIT)",
-      title: "Junior Software Developer",
-      period: "Nov 2023 - Present · 1 yr 5 mos",
+      title: "Software Developer",
+      period: "Nov 2023 – Feb 2026 · 2 yrs 3 mos",
       location: "Delhi, India · On-site",
+      intro: "Worked full-time on critical organization applications across document management, recruitment, and web platforms.",
       projects: [
         {
           title: "Central Repository",
           url: "https://drive.nielit.in",
           description: [
-            "Developed a document management application for the organization using the MERN Stack.",
-            "Enabled users to create folders, upload documents, and share them within the organization.",
-            "Implemented permission levels: View Only, View and Edit, and Open to All.",
-            "Integrated JWT Authentication for secure and controlled access.",
-            "Enforced a 50 MB upload limit per file and a total upload limit of 16 GB per user.",
-            "Utilized Multer for efficient file handling.",
-            "Created User Management page for admin.",
-            "Added an Archive Document feature for document management.",
-            "Optimized performance by streaming data in chunks to reduce page load time."
+            "Built a Document Management application for the internal team using ReactJs, NodeJS, TypeScript, ShadCN UI, TailwindCSS, and MongoDB.",
+            "Crafted end-to-end application from scratch with comprehensive authentication — login, password recovery, 2FA, and JWT session management.",
+            "Implemented permission levels: View Only, View & Edit, and Open To All.",
+            "Enforced 50 MB per-file upload limit and 16 GB maximum storage per user with Multer for efficient file handling.",
+            "Optimized page load time by 90% by streaming data in chunks."
           ]
         },
         {
@@ -112,9 +158,34 @@ const Experience: React.FC = () => {
           url: "https://recruit.nielit.in",
           description: [
             "Revamped the recruitment portal with ReactJS and NodeJS, leveraging the existing MySQL database.",
-            "Created a dynamic form generation component based on fields and groups received from the database.",
-            "Integrated Redux for centralized data storage, ensuring consistent data flow across the application.",
-            "Customized validation handling for different group types, such as tables and tables with add row functionality."
+            "Implemented a dynamic form generation component based on fields and groups received from the database.",
+            "Integrated Redux for centralized data storage, cutting API calls by 30% and improving page rendering speed by 25%.",
+            "Enabled customized validation handling for different group types, including tables and tables with add-row functionality."
+          ]
+        },
+        {
+          title: "NIELIT Main Blog Website",
+          url: "https://nielit.gov.in",
+          description: [
+            "Generated dynamic pages based on components retrieved from MySQL procedures.",
+            "Enabled Superadmin to assign Content Approvers and Content Creators for each subsite.",
+            "Built a Text Editor for writing blogs and crafting static pages with prebuilt custom UI components."
+          ]
+        },
+        {
+          title: "NIELIT Digital University",
+          url: "https://ndu.digital",
+          description: [
+            "Enabled course admins to upload questions and built the frontend with ReactJs integrated with backend APIs.",
+            "Implemented third-party course integration mechanism."
+          ]
+        },
+        {
+          title: "Node API For Local Exam Server",
+          description: [
+            "Engineered Node.js APIs for a local exam server using Express and MySQL stored procedures.",
+            "Used PM2 clustering to scale across CPU cores, boosting request capacity from 100–200 to 400–800 per minute.",
+            "Integrated Winston with DailyRotateFile for logging, JWT authentication for security, and optimized image handling and bulk transactions."
           ]
         }
       ]
@@ -130,15 +201,17 @@ const Experience: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-gray-400 text-transparent bg-clip-text">
             Work Experience
           </h1>
-          <Link 
-            href="https://drive.google.com/file/d/1F_KzKJhwWy0d8ExnlEw99wQeN1XausNv/view?usp=sharing" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="group inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-3 rounded-md text-white border border-blue-700 hover:border-blue-400 transition-all duration-300 shadow-lg hover:shadow-blue-900/20"
-          >
-            <span className="font-medium">View Resume</span>
-            <span className="text-xl transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </Link>
+          {resumeUrl && (
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-3 rounded-md text-white border border-blue-700 hover:border-blue-400 transition-all duration-300 shadow-lg hover:shadow-blue-900/20"
+            >
+              <span className="font-medium">View Resume</span>
+              <span className="text-xl transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+          )}
         </div>
         
         <div className="text-center mb-16">
@@ -150,12 +223,14 @@ const Experience: React.FC = () => {
         <div className="space-y-16 relative">
           <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent"></div>
           {experienceData.map((role, index) => (
-            <Role 
+            <Role
               key={index}
               company={role.company}
+              companyUrl={role.companyUrl}
               title={role.title}
               period={role.period}
               location={role.location}
+              intro={role.intro}
               projects={role.projects}
             />
           ))}

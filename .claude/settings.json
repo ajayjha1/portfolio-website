@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Write(/Users/apple/Desktop/portfolio-website/src/**)",
+      "Edit(/Users/apple/Desktop/portfolio-website/src/**)",
+      "Write(/Users/apple/Desktop/portfolio-website/.claude/**)",
+      "Bash(npm run dev)",
+      "Bash(npm run build)",
+      "Bash(npm run lint)"
+    ]
+  }
+}
