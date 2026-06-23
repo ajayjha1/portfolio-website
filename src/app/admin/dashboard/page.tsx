@@ -85,7 +85,7 @@ export default function AdminDashboard() {
   const [editingId,     setEditingId]     = useState<string | null>(null);
   const [form,          setForm]          = useState(emptyForm());
   const [tagsInput,     setTagsInput]     = useState("");
-  const [saving,        setSaving]        = useState(false);
+  const [_saving,       _setSaving]       = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   /* ── Projects state ── */
