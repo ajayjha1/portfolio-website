@@ -14,6 +14,7 @@ export const Header = () => {
         { name: "Experience", path: "/Experience" },
         { name: "Projects", path: "/Projects" },
         { name: "Blog", path: "/Blog" },
+        { name: "Playground", path: "/Playground" },
         { name: "Contact", path: "/Contact" }
     ];
 

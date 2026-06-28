@@ -243,5 +243,14 @@
     "stack": true,
     "openSource": false,
     "footer": true
+  },
+  "playground": {
+    "intro": "Outside the code, I'm usually deep in music and other things that don't have a deadline.",
+    "music": [],
+    "mma": {
+      "tagline": "Nothing clears a bug-filled mind better than a few rounds of sparring.",
+      "disciplines": ["Muay Thai", "Brazilian Jiu-Jitsu", "Wrestling", "Boxing"],
+      "note": ""
+    }
   }
 }

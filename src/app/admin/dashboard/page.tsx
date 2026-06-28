@@ -14,6 +14,10 @@ interface FocusCard  { icon: string; label: string; desc: string; tag: string; }
 interface StackGroup { label: string; items: string; } // items stored as comma-string for editing
 interface OpenSource { text: string; githubUrl: string; }
 interface Project    { id: string; title: string; period: string; category: string; description: string; tech: string[]; liveUrl: string; githubUrl: string; videoUrl: string; }
+interface PlaygroundTrack { id: string; title: string; artist: string; appleUrl: string; note: string; }
+interface MMASettings { tagline: string; disciplines: string[]; note: string; }
+const emptyTrack = (): PlaygroundTrack => ({ id: Date.now().toString(), title: "", artist: "", appleUrl: "", note: "" });
+const DEFAULT_MMA: MMASettings = { tagline: "Nothing clears a bug-filled mind better than a few rounds of sparring.", disciplines: ["Muay Thai", "Brazilian Jiu-Jitsu", "Wrestling", "Boxing"], note: "" };
 
 const PROJ_CATEGORIES = ["M37 Labs", "NIELIT", "AARN Logistics", "Side Project", "Other"];
 const emptyProject = (): Project => ({ id: Date.now().toString(), title: "", period: "", category: "Side Project", description: "", tech: [], liveUrl: "", githubUrl: "", videoUrl: "" });
@@ -74,7 +78,7 @@ function SectionWrap({ title, children, open, onToggle, visible, onToggleVisible
 export default function AdminDashboard() {
   const router = useRouter();
   const [token, setToken]   = useState<string | null>(null);
-  const [activeTab, setTab] = useState<"posts" | "projects" | "homepage">("posts");
+  const [activeTab, setTab] = useState<"posts" | "projects" | "homepage" | "playground">("posts");
   const [toast, setToast]   = useState<{ msg: string; type: "success" | "error" } | null>(null);
   const [openSec, setOpenSec] = useState<string | null>(null);
 
@@ -126,6 +130,19 @@ export default function AdminDashboard() {
   const [resumeUrl,   setResumeUrl]   = useState("");
   const [resumeOrig,  setResumeOrig]  = useState("");
 
+  /* ── Playground state ── */
+  const [pgIntro,       setPgIntro]       = useState("Outside the code, I'm usually deep in music and other things that don't have a deadline.");
+  const [pgIntroOrig,   setPgIntroOrig]   = useState("");
+  const [mma,           setMma]           = useState<MMASettings>(DEFAULT_MMA);
+  const [mmaOrig,       setMmaOrig]       = useState<MMASettings>(DEFAULT_MMA);
+  const [mmaDisciplinesInput, setMmaDisciplinesInput] = useState(DEFAULT_MMA.disciplines.join(", "));
+  const [pgMusic,       setPgMusic]       = useState<PlaygroundTrack[]>([]);
+  const [showTrackForm, setShowTrackForm] = useState(false);
+  const [editingTrackId, setEditingTrackId] = useState<string | null>(null);
+  const [trackForm,     setTrackForm]     = useState<PlaygroundTrack>(emptyTrack());
+  const [savingTrack,   setSavingTrack]   = useState(false);
+  const [deleteTrackConfirm, setDeleteTrackConfirm] = useState<string | null>(null);
+
   /* ── Auth ── */
   useEffect(() => {
     const t = localStorage.getItem("adminToken");
@@ -154,6 +171,14 @@ export default function AdminDashboard() {
       setResumeUrl(ru); setResumeOrig(ru);
       if (d.sectionVisibility) setVis(v => ({ ...v, ...d.sectionVisibility }));
       if (d.projects) setProjects(d.projects);
+      if (d.playground) {
+        const intro = d.playground.intro || "";
+        setPgIntro(intro); setPgIntroOrig(intro);
+        setPgMusic(d.playground.music || []);
+        const m: MMASettings = { ...DEFAULT_MMA, ...(d.playground.mma || {}) };
+        setMma(m); setMmaOrig(m);
+        setMmaDisciplinesInput(m.disciplines.join(", "));
+      }
     });
   }, []);
 
@@ -237,6 +262,54 @@ export default function AdminDashboard() {
     if (res.ok) { setProjects(next); showToast("Order saved!"); }
   }
 
+  /* ── Playground helpers ── */
+  function openNewTrack() { setEditingTrackId(null); setTrackForm(emptyTrack()); setShowTrackForm(true); }
+  function openEditTrack(t: PlaygroundTrack) { setEditingTrackId(t.id); setTrackForm({ ...t }); setShowTrackForm(true); }
+
+  async function savePg(patch: { intro?: string; music?: PlaygroundTrack[]; mma?: MMASettings }) {
+    if (!token) return;
+    const merged = { intro: pgIntro, music: pgMusic, mma, ...patch };
+    const res = await fetch("/api/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ playground: merged }),
+    });
+    return res.ok;
+  }
+
+  async function savePgMusic(next: PlaygroundTrack[]) {
+    const ok = await savePg({ music: next });
+    if (ok) { setPgMusic(next); showToast("Saved!"); }
+    else showToast("Save failed.", "error");
+  }
+
+  async function handleSaveTrack() {
+    setSavingTrack(true);
+    let next: PlaygroundTrack[];
+    if (editingTrackId) {
+      next = pgMusic.map(t => t.id === editingTrackId ? trackForm : t);
+    } else {
+      next = [...pgMusic, { ...trackForm, id: Date.now().toString() }];
+    }
+    await savePgMusic(next);
+    setSavingTrack(false);
+    setShowTrackForm(false);
+  }
+
+  async function handleDeleteTrack(id: string) {
+    const next = pgMusic.filter(t => t.id !== id);
+    await savePgMusic(next);
+    setDeleteTrackConfirm(null);
+  }
+
+  async function moveTrackOrder(id: string, dir: -1 | 1) {
+    const idx = pgMusic.findIndex(t => t.id === id);
+    if (idx + dir < 0 || idx + dir >= pgMusic.length) return;
+    const next = [...pgMusic];
+    [next[idx], next[idx + dir]] = [next[idx + dir], next[idx]];
+    await savePgMusic(next);
+  }
+
   /* ── Blog handlers ── */
   function openNew() { setEditingId(null); setForm(emptyForm()); setTagsInput(""); setShowForm(true); }
   function openEdit(b: Blog) { setEditingId(b.id); setForm({ title: b.title, slug: b.slug, excerpt: b.excerpt, content: b.content, tags: b.tags, date: b.date, published: b.published }); setTagsInput(b.tags.join(", ")); setShowForm(true); }
@@ -294,10 +367,10 @@ export default function AdminDashboard() {
       {/* Tab strip */}
       <div className="border-b border-gray-800 px-6">
         <div className="flex gap-1">
-          {(["posts", "projects", "homepage"] as const).map(tab => (
+          {(["posts", "projects", "homepage", "playground"] as const).map(tab => (
             <button key={tab} onClick={() => setTab(tab)}
               className={`px-4 py-3 text-sm font-medium capitalize transition-colors border-b-2 -mb-px ${activeTab === tab ? "border-blue-500 text-white" : "border-transparent text-gray-500 hover:text-gray-300"}`}>
-              {tab === "posts" ? "Blog Posts" : tab === "projects" ? "Projects" : "Homepage"}
+              {tab === "posts" ? "Blog Posts" : tab === "projects" ? "Projects" : tab === "homepage" ? "Homepage" : "Playground"}
             </button>
           ))}
         </div>
@@ -560,6 +633,136 @@ export default function AdminDashboard() {
 
           </div>
         )}
+        {/* ═══════════════ PLAYGROUND TAB ═══════════════ */}
+        {activeTab === "playground" && (
+          <div className="space-y-6">
+
+            {/* Intro text */}
+            <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-5 space-y-3">
+              <h2 className="text-sm font-medium text-white">Intro Text</h2>
+              <textarea
+                value={pgIntro}
+                onChange={e => setPgIntro(e.target.value)}
+                rows={3}
+                className={`${inputCls} resize-none`}
+                placeholder="Write a short intro for the Playground page..."
+              />
+              <div className="flex justify-end">
+                <SaveBtn
+                  onClick={async () => {
+                    setSavKey("pgIntro", true);
+                    const ok = await savePg({ intro: pgIntro });
+                    setSavKey("pgIntro", false);
+                    if (ok) { setPgIntroOrig(pgIntro); showToast("Saved!"); }
+                    else showToast("Save failed.", "error");
+                  }}
+                  saving={!!sav.pgIntro}
+                  disabled={pgIntro === pgIntroOrig}
+                />
+              </div>
+            </div>
+
+            {/* MMA */}
+            <div className="bg-gray-900/50 border border-orange-900/40 rounded-xl p-5 space-y-4">
+              <h2 className="text-sm font-medium text-orange-300">🥊 MMA / Fighting</h2>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1.5">Tagline</label>
+                  <input
+                    value={mma.tagline}
+                    onChange={e => setMma(m => ({ ...m, tagline: e.target.value }))}
+                    className={inputCls}
+                    placeholder="One line about your MMA journey..."
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1.5">Disciplines <span className="text-gray-600">(comma-separated)</span></label>
+                  <input
+                    value={mmaDisciplinesInput}
+                    onChange={e => setMmaDisciplinesInput(e.target.value)}
+                    className={inputCls}
+                    placeholder="Muay Thai, BJJ, Wrestling, Boxing"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-400 mb-1.5">Personal Note <span className="text-gray-600">(optional)</span></label>
+                  <textarea
+                    value={mma.note}
+                    onChange={e => setMma(m => ({ ...m, note: e.target.value }))}
+                    rows={2}
+                    className={`${inputCls} resize-none`}
+                    placeholder="Anything extra you want to share..."
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <SaveBtn
+                  onClick={async () => {
+                    const disciplines = mmaDisciplinesInput.split(",").map(s => s.trim()).filter(Boolean);
+                    const next = { ...mma, disciplines };
+                    setSavKey("mma", true);
+                    const ok = await savePg({ mma: next });
+                    setSavKey("mma", false);
+                    if (ok) { setMma(next); setMmaOrig(next); showToast("Saved!"); }
+                    else showToast("Save failed.", "error");
+                  }}
+                  saving={!!sav.mma}
+                  disabled={mma.tagline === mmaOrig.tagline && mma.note === mmaOrig.note && mmaDisciplinesInput === mmaOrig.disciplines.join(", ")}
+                />
+              </div>
+            </div>
+
+            {/* Music tracks */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-sm font-medium text-white">Music</h2>
+                  <p className="text-xs text-gray-600 mt-0.5">Paste Apple Music share URLs — they embed automatically.</p>
+                </div>
+                <button onClick={openNewTrack} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                  Add Track
+                </button>
+              </div>
+
+              {pgMusic.length === 0 ? (
+                <div className="text-center py-16 border border-dashed border-gray-700 rounded-xl">
+                  <p className="text-gray-500 text-sm mb-2">No music tracks yet.</p>
+                  <button onClick={openNewTrack} className="text-blue-400 hover:text-blue-300 text-sm underline">Add your first track</button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {pgMusic.map((track, idx) => (
+                    <div key={track.id} className="bg-gray-900/60 border border-gray-800 rounded-xl px-5 py-4 flex items-start gap-4 hover:border-gray-700 transition-colors">
+                      <div className="flex flex-col gap-0.5 shrink-0 pt-1">
+                        <button onClick={() => moveTrackOrder(track.id, -1)} disabled={idx === 0} className="text-gray-600 hover:text-gray-300 disabled:opacity-20 transition-colors px-1">▲</button>
+                        <button onClick={() => moveTrackOrder(track.id, 1)} disabled={idx === pgMusic.length - 1} className="text-gray-600 hover:text-gray-300 disabled:opacity-20 transition-colors px-1">▼</button>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-white text-sm truncate">{track.title}</h3>
+                        <p className="text-xs text-gray-500 mt-0.5">{track.artist}</p>
+                        {track.note && <p className="text-xs text-gray-600 mt-1 line-clamp-1 italic">{track.note}</p>}
+                        <p className="text-xs text-gray-700 font-mono mt-1 truncate">{track.appleUrl}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button onClick={() => openEditTrack(track)} className="text-xs px-3 py-1.5 rounded-lg border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors">Edit</button>
+                        {deleteTrackConfirm === track.id ? (
+                          <div className="flex items-center gap-1">
+                            <button onClick={() => handleDeleteTrack(track.id)} className="text-xs px-3 py-1.5 rounded-lg bg-red-700 text-white hover:bg-red-600 transition-colors">Confirm</button>
+                            <button onClick={() => setDeleteTrackConfirm(null)} className="text-xs px-2 py-1.5 text-gray-400 hover:text-white transition-colors">Cancel</button>
+                          </div>
+                        ) : (
+                          <button onClick={() => setDeleteTrackConfirm(track.id)} className="text-xs px-3 py-1.5 rounded-lg border border-red-900 text-red-400 hover:bg-red-900/30 transition-colors">Delete</button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
       </div>
 
       {/* Project Editor Modal */}
@@ -614,6 +817,43 @@ export default function AdminDashboard() {
               <button onClick={() => setShowProjForm(false)} className="px-5 py-2.5 text-sm border border-gray-700 rounded-lg text-gray-300 hover:bg-gray-800 transition-colors">Cancel</button>
               <button onClick={handleSaveProj} disabled={savingProj || !projForm.title || !projForm.description} className="px-5 py-2.5 text-sm bg-blue-600 hover:bg-blue-700 disabled:bg-blue-900 disabled:cursor-not-allowed rounded-lg text-white font-medium transition-colors">
                 {savingProj ? "Saving..." : editingProjId ? "Update Project" : "Add Project"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Music Track Editor Modal */}
+      {showTrackForm && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 flex items-center justify-center p-4">
+          <div className="bg-gray-950 border border-gray-800 rounded-xl w-full max-w-lg">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+              <h2 className="text-lg font-bold">{editingTrackId ? "Edit Track" : "Add Track"}</h2>
+              <button onClick={() => setShowTrackForm(false)} className="text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm text-gray-400 mb-1.5">Track / Album Title <span className="text-red-400">*</span></label>
+                <input value={trackForm.title} onChange={e => setTrackForm(f => ({ ...f, title: e.target.value }))} className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors" placeholder="e.g. Bohemian Rhapsody" />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1.5">Artist</label>
+                <input value={trackForm.artist} onChange={e => setTrackForm(f => ({ ...f, artist: e.target.value }))} className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors" placeholder="e.g. Queen" />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1.5">Apple Music URL <span className="text-red-400">*</span></label>
+                <input value={trackForm.appleUrl} onChange={e => setTrackForm(f => ({ ...f, appleUrl: e.target.value }))} className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors font-mono text-sm" placeholder="https://music.apple.com/..." />
+                <p className="text-xs text-gray-600 mt-1.5">Paste the share URL from Apple Music — it embeds automatically.</p>
+              </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1.5">Personal Note <span className="text-gray-600">(optional)</span></label>
+                <textarea value={trackForm.note} onChange={e => setTrackForm(f => ({ ...f, note: e.target.value }))} rows={2} className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors resize-none" placeholder="Why you love this track or what it means to you..." />
+              </div>
+            </div>
+            <div className="px-6 py-4 border-t border-gray-800 flex justify-end gap-3">
+              <button onClick={() => setShowTrackForm(false)} className="px-5 py-2.5 text-sm border border-gray-700 rounded-lg text-gray-300 hover:bg-gray-800 transition-colors">Cancel</button>
+              <button onClick={handleSaveTrack} disabled={savingTrack || !trackForm.title || !trackForm.appleUrl} className="px-5 py-2.5 text-sm bg-blue-600 hover:bg-blue-700 disabled:bg-blue-900 disabled:cursor-not-allowed rounded-lg text-white font-medium transition-colors">
+                {savingTrack ? "Saving..." : editingTrackId ? "Update Track" : "Add Track"}
               </button>
             </div>
           </div>
