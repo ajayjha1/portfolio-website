@@ -3,14 +3,34 @@ import fs from "fs";
 import path from "path";
 
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "m37labs-portfolio-admin-token";
+const SETTINGS_KEY = "portfolio:settings";
 const settingsFile = path.join(process.cwd(), "src", "data", "settings.json");
 
-function readSettings() {
+function readFile() {
   return JSON.parse(fs.readFileSync(settingsFile, "utf-8"));
 }
 
-function writeSettings(data: object) {
-  fs.writeFileSync(settingsFile, JSON.stringify(data, null, 2));
+async function readSettings() {
+  // On Vercel, read from KV; locally fall back to JSON file
+  if (process.env.KV_REST_API_URL) {
+    const { kv } = await import("@vercel/kv");
+    const data = await kv.get<object>(SETTINGS_KEY);
+    if (data) return data;
+    // First deploy: seed KV from the committed JSON file
+    const seed = readFile();
+    await kv.set(SETTINGS_KEY, seed);
+    return seed;
+  }
+  return readFile();
+}
+
+async function writeSettings(data: object) {
+  if (process.env.KV_REST_API_URL) {
+    const { kv } = await import("@vercel/kv");
+    await kv.set(SETTINGS_KEY, data);
+  } else {
+    fs.writeFileSync(settingsFile, JSON.stringify(data, null, 2));
+  }
 }
 
 function isAdmin(req: NextRequest) {
@@ -18,7 +38,8 @@ function isAdmin(req: NextRequest) {
 }
 
 export async function GET() {
-  return NextResponse.json(readSettings());
+  const data = await readSettings();
+  return NextResponse.json(data);
 }
 
 export async function PUT(req: NextRequest) {
@@ -26,8 +47,8 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await req.json();
-  const current = readSettings();
+  const current = await readSettings();
   const updated = { ...current, ...body };
-  writeSettings(updated);
+  await writeSettings(updated);
   return NextResponse.json(updated);
 }

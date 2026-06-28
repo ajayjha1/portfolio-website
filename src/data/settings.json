@@ -1,5 +1,5 @@
 {
-  "resumeUrl": "https://drive.google.com/file/d/1F_KzKJhwWy0d8ExnlEw99wQeN1XausNv/view?usp=sharing",
+  "resumeUrl": "https://drive.google.com/file/d/1iUftZxiWKb4qtZ6h0AffeIAchGo1w9bs/view?usp=sharing",
   "aboutText": "I design and ship full-stack web applications — from clean APIs to polished interfaces. I enjoy working across the stack, solving hard problems, and building tools that are fast, reliable, and actually useful.",
   "roles": [
     "Full Stack Developer",
@@ -249,7 +249,12 @@
     "music": [],
     "mma": {
       "tagline": "Nothing clears a bug-filled mind better than a few rounds of sparring.",
-      "disciplines": ["Muay Thai", "Brazilian Jiu-Jitsu", "Wrestling", "Boxing"],
+      "disciplines": [
+        "Muay Thai",
+        "Brazilian Jiu-Jitsu",
+        "Wrestling",
+        "Boxing"
+      ],
       "note": ""
     }
   }
