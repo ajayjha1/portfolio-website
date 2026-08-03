@@ -10,15 +10,22 @@ function readFile() {
   return JSON.parse(fs.readFileSync(settingsFile, "utf-8"));
 }
 
+async function getRedis() {
+  const { Redis } = await import("@upstash/redis");
+  return new Redis({
+    url: process.env.KV_REST_API_URL,
+    token: process.env.KV_REST_API_TOKEN,
+  });
+}
+
 async function readSettings() {
-  // On Vercel, read from KV; locally fall back to JSON file
   if (process.env.KV_REST_API_URL) {
-    const { kv } = await import("@vercel/kv");
-    const data = await kv.get<object>(SETTINGS_KEY);
+    const redis = await getRedis();
+    const data = await redis.get(SETTINGS_KEY);
     if (data) return data;
-    // First deploy: seed KV from the committed JSON file
+    // First run: seed Redis from the committed JSON file
     const seed = readFile();
-    await kv.set(SETTINGS_KEY, seed);
+    await redis.set(SETTINGS_KEY, seed);
     return seed;
   }
   return readFile();
@@ -26,8 +33,8 @@ async function readSettings() {
 
 async function writeSettings(data: object) {
   if (process.env.KV_REST_API_URL) {
-    const { kv } = await import("@vercel/kv");
-    await kv.set(SETTINGS_KEY, data);
+    const redis = await getRedis();
+    await redis.set(SETTINGS_KEY, data);
   } else {
     fs.writeFileSync(settingsFile, JSON.stringify(data, null, 2));
   }

@@ -83,3 +83,182 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* ─────────────────────────────────────────────
+   THE WORKSHOP — warm wood & paper world
+   ───────────────────────────────────────────── */
+
+/* Dark walnut wood surface: layered radial "lamp" glow + grain */
+.workshop-surface {
+  background-color: #241811;
+  background-image:
+    radial-gradient(120% 80% at 72% 8%, rgba(255, 176, 84, 0.18), rgba(255, 138, 0, 0.05) 30%, transparent 60%),
+    radial-gradient(90% 60% at 20% 100%, rgba(0, 0, 0, 0.55), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.14) 0 2px, transparent 2px 5px),
+    linear-gradient(160deg, #3a281a 0%, #2b1d13 45%, #201510 100%);
+  background-attachment: fixed;
+}
+
+/* Fine dust/noise grain overlay */
+.workshop-grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Paper sheet — a warm card clipped to the table */
+.paper {
+  background-color: #f2e4cc;
+  background-image:
+    radial-gradient(100% 100% at 0% 0%, #f7ecd8, #ead9bc 80%);
+  color: #3a2a1c;
+  border-radius: 0.9rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25), 0 8px 24px -8px rgba(0,0,0,0.55);
+  position: relative;
+}
+.paper-aged { background-color: #ead9bc; background-image: radial-gradient(100% 100% at 100% 0%, #f0e0c6, #dfcaa8 90%); }
+
+/* Sticky note */
+.sticky-note {
+  color: #4a3b26;
+  border-radius: 4px;
+  box-shadow: 0 6px 14px -6px rgba(0,0,0,0.5);
+  transform: rotate(-2deg);
+}
+
+/* Wooden drawer button (nav) */
+.drawer-btn {
+  background: linear-gradient(180deg, #4a3224, #3a2618);
+  box-shadow: inset 0 1px 0 rgba(255,220,170,0.08), 0 2px 6px rgba(0,0,0,0.5);
+}
+
+/* Floating dust particles */
+.dust {
+  position: absolute;
+  border-radius: 9999px;
+  background: rgba(255, 226, 180, 0.7);
+  filter: blur(0.5px);
+  animation: dust-rise linear infinite;
+  pointer-events: none;
+}
+@keyframes dust-rise {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.35; }
+  100% { transform: translateY(-140px) translateX(24px); opacity: 0; }
+}
+
+/* Warm themed scrollbar */
+.workshop-surface ::-webkit-scrollbar { width: 10px; height: 10px; }
+.workshop-surface ::-webkit-scrollbar-track { background: #241811; }
+.workshop-surface ::-webkit-scrollbar-thumb { background: #4a3224; border-radius: 8px; border: 2px solid #241811; }
+.workshop-surface ::-webkit-scrollbar-thumb:hover { background: #7a5230; }
+
+/* ── Hero immersion ── */
+
+/* Engraved wooden plaque button (primary) */
+.btn-wood {
+  position: relative;
+  color: #ffd9a3;
+  background:
+    linear-gradient(180deg, #43301f 0%, #341f11 60%, #2a1810 100%);
+  border-radius: 0.85rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 200, 130, 0.18),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.55),
+    inset 0 2px 5px rgba(0, 0, 0, 0.5),
+    0 6px 18px -8px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 138, 0, 0.35);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s;
+}
+.btn-wood:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 200, 130, 0.22),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.55),
+    0 10px 26px -8px rgba(0, 0, 0, 0.75),
+    0 0 26px -2px rgba(255, 138, 0, 0.5);
+}
+.btn-wood:active { transform: translateY(0); }
+/* engraved wood grain streaks */
+.btn-wood::before {
+  content: "";
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgba(0,0,0,0.10) 0 2px, transparent 2px 6px);
+  opacity: 0.5;
+}
+
+/* Paper label button (secondary) */
+.btn-paper {
+  color: #4a3b26;
+  background: linear-gradient(180deg, #f5e8d3, #e7d3af);
+  border-radius: 0.6rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
+  transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), box-shadow 0.25s;
+}
+.btn-paper:hover {
+  transform: translateY(-2px) rotate(-0.6deg);
+  box-shadow: 0 8px 18px -6px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.6);
+}
+.btn-paper:active { transform: translateY(0); }
+
+/* Coffee steam wisps */
+.steam {
+  position: absolute;
+  width: 6px;
+  height: 34px;
+  border-radius: 9999px;
+  background: linear-gradient(to top, rgba(255,240,220,0) 0%, rgba(255,240,220,0.55) 45%, rgba(255,240,220,0) 100%);
+  filter: blur(3px);
+  opacity: 0;
+  animation: steam-rise 4.5s ease-in-out infinite;
+}
+@keyframes steam-rise {
+  0%   { transform: translateY(0) scaleX(1); opacity: 0; }
+  15%  { opacity: 0.5; }
+  60%  { opacity: 0.35; }
+  100% { transform: translateY(-46px) scaleX(1.7); opacity: 0; }
+}
+
+/* Dissolve the illustration edges into the page with a real alpha mask —
+   radial handles the sides/corners, the vertical gradient guarantees a
+   soft top + bottom. Intersecting them melts the rectangle into the wall. */
+.edge-feather {
+  -webkit-mask-image:
+    radial-gradient(125% 130% at 62% 50%, #000 46%, transparent 92%),
+    linear-gradient(to bottom, transparent 0%, #000 16%, #000 78%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(125% 130% at 62% 50%, #000 46%, transparent 92%),
+    linear-gradient(to bottom, transparent 0%, #000 16%, #000 78%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* Clipboard project card — swings from its clip on hover */
+.clip-card {
+  transform-origin: 50% 7%;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s;
+  will-change: transform;
+}
+.clip-card:hover {
+  animation: clip-swing 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  filter: drop-shadow(0 16px 20px rgba(0, 0, 0, 0.55));
+  z-index: 20;
+}
+@keyframes clip-swing {
+  0%   { transform: rotate(0deg) translateY(0); }
+  25%  { transform: rotate(-3deg) translateY(-10px); }
+  55%  { transform: rotate(2deg) translateY(-8px); }
+  80%  { transform: rotate(-1deg) translateY(-7px); }
+  100% { transform: rotate(0deg) translateY(-6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dust, .animate-wiggle, .animate-lamp-flicker, .animate-fade-up, .steam { animation: none !important; }
+  .clip-card:hover { animation: none !important; transform: translateY(-6px); }
+  * { scroll-behavior: auto !important; }
+}
